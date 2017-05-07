@@ -107,7 +107,7 @@ function Laba3()
     $(equateBtn).click( function(e){
         e.preventDefault();
         $(answer).html("<p>Wait...</p>");
-        $(funcText).text( ($(funct).val()).replace(/\*/g , '•') + " = 0" );
+        $(funcText).text( ($(funct).val()).replace(/\*/g , '•').replace(/\ /g , '').replace(/\+/g," + ").replace(/\-/g," - ") + " = 0" );
 
     
         methods = [ ];
