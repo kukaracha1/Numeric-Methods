@@ -1,0 +1,31 @@
+body
+{
+    background: #333;
+    color:white;
+    font-size:20px;
+    margin:1% auto;
+    width:95%;
+
+}
+
+form span , form input
+{
+    display: block;
+    margin:1%;
+}
+
+button
+{
+    margin:1%;
+    border-collapse: collapse;
+}
+
+#work
+{
+    display: none;
+}
+
+#jsButton
+{
+    /*display: none;*/
+}
