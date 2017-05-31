@@ -18,8 +18,6 @@ class Method
 	private $errorList;
 	private $overload = 10000;
     
-	public $forA;
-	public $forB;
 
     public function __construct($name)
     {
@@ -527,14 +525,21 @@ function secantMethod($a,$b,$eps)
             }
             else
          {
-			if (equate($b) * $this->derivative2($b,$eps) <0)
-			{$c = $a;
-			$v=$a;
-			} 
-			else
+	
+			if (equate($b) * $this->derivative2($b,$eps) > 0)
 			{
-				 $c = $b;
+				$c = $b;
 				$v=$b;
+			} 
+			else if (equate($a) * $this->derivative2($a,$eps) > 0)
+			{
+				$c = $a;
+				$v=$a;
+			}
+			else 
+			{
+				$this->comment = $this->errorList[4]->text;// нет корней или четные 			
+				return "Error";						
 			}
 			do
 			{	
@@ -565,13 +570,11 @@ function methodOfTangents($a,$b,$eps)
             }
             else 
          {
-			$this->forA = equate($a) * $this->derivative2($a,$eps);
-			$this->forB = equate($b) * $this->derivative2($b,$eps);
 
-			if (equate($b) * $this->derivative2($b,$eps) <0) 
-				$c = $a;
-			else if (equate($a) * $this->derivative2($a,$eps) <0)
+			if (equate($b) * $this->derivative2($b,$eps) >0) 
 				$c = $b;
+			else if (equate($a) * $this->derivative2($a,$eps) >0)
+				$c = $a;
 				else {
 				$this->comment = $this->errorList[4]->text;// нет корней или четные 			
 				return "Error";						
