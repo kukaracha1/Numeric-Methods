@@ -18,8 +18,8 @@ class Method
 	private $errorList;
 	private $overload = 10000;
     
-	public $a;
-	
+	public $forA;
+	public $forB;
 
     public function __construct($name)
     {
@@ -318,145 +318,156 @@ class Method
 
 // HYBRID
 
-	// 	function hybridMethod($a, $b, $accuracy)
-		// 	{
-		// 		$startInterval = $a;
-		// 		$endInterval = $b;
-		// 		$xs = [];
-		// 		$flag = false;
-		// 		$i = 0;
-		// //step 1
-		// 		for ($i=0; $i < 2; $i++) { 
-		// //step 2
-		// 			$xs[$i] = ($a + $b)/2;
-		// //step 3
-		// 			if (equate($xs[$i]) < $accuracy)
-		// 			{
-		// 				$flag = true;
-		// 				$i++;
-		// 				break;
-		// 			}
-		// 			else
-		// 			{
-		// // step 4
-		// 				if ( equate($a)*equate($xs[$i]) < 0)
-		// 					$b = $xs[$i];
-		// // step 5
-		//  				else
-		// 					$a = $xs[$i];
-		// 			}
-		// 		}
-		// // step 6 - end for
-		// 		$i--;
-		// // step 7
-		// 		$der = $this->derivative($xs[$i], $accuracy);
-		// 		if ($der == 0)
-		// 		{
-		// 			$this->comment = $this->errorList[1]->text;//1- функция не определена	
-		// 			return "Error";				
-		// 		}
-		// 		else
-		// 		$t = $xs[$i] - equate($xs[$i]) / $der;
-
-		// 		if($t > $endInterval || $t < $startInterval)
-		// 		{
-		// 			$this->comment = $this->errorList[0]->text;//1- функция не определена	
-		// 			return "Error";					
-		// 		}
-
-		// // step 8			
-		// 		while( abs(equate($t)) > $accuracy )
-		// 		{
-		// 			$xs[$i] = $t;
-
-		// 			$der = $this->derivative($xs[$i], $accuracy);
-		// 			if ($der == 0)
-		// 			{
-		// 				$this->comment = $this->errorList[1]->text;//1- функция не определена	
-		// 				return "Error";				
-		// 			}
-		// 			else
-		// 			{
-		// 				$t = $xs[$i] - equate($xs[$i]) / $der;
-		// 				$this->iterations++;
-		// 				if($t > $endInterval || $t < $startInterval)
-		// 				{
-		// 					$this->comment = $this->errorList[0]->text;//1- функция не определена	
-		// 					return "Error";					
-		// 				}
-		// 			}
-		// 			if($this->iterations > $this->overload)
-		// 			{					
-		// 					$this->comment = $this->errorList[2]->text;//1- функция не определена	
-		// 					return "Error";				
-		// 			}	
-		// 		}
-		// 		return $t;
-		// 	}
-
-	function hybridMethod($a, $b, $accuracy)
-	{
-		$c = 0;
-		$f_a = equate($a);
-		$f_b = equate($b);
-		$der = 0;
-		$XX = 0;
-		$xk1 = 0;
-		$xk = $a;
-		
-		
-		if( $f_a * $f_b > 0)
-		{
-			$this->comment = $this->errorList[3]->text;// нет корней или четные
-			return "Error";	
-		}
-		else
-		{
-
-			do
+		function hybridMethod($a, $b, $accuracy)
 			{
-				$this->iterations++;
-				$c = $xk;
-				$der = $this->derivative($xk, $accuracy/10);
-				if ($der==0)
+				$f_a = equate($a);
+				$f_b = equate($b);
+				if( $f_a * $f_b > 0)
 				{
-					$this->comment = $this->errorList[1]->text;	// division by zero
-					return "Error";						
+					$this->comment = $this->errorList[3]->text;// нет корней или четные
+					return "Error";	
 				}
-				$XX = $xk - equate($xk) / $der;
-				do
+				else
 				{
-					// $this->iterations++;
-					if( abs(equate($XX)) <= abs(equate($xk)) )
+					$startInterval = $a;
+					$endInterval = $b;
+					$xs = [];
+					$flag = false;
+					$i = 0;
+			//step 1
+					for ($i=0; $i < 2; $i++) { 
+			//step 2
+						$xs[$i] = ($a + $b)/2;
+			//step 3
+						if (equate($xs[$i]) < $accuracy)
+						{
+							$flag = true;
+							$i++;
+							break;
+						}
+						else
+						{
+			// step 4
+							if ( equate($a)*equate($xs[$i]) < 0)
+								$b = $xs[$i];
+			// step 5
+							else
+								$a = $xs[$i];
+						}
+					}
+			// step 6 - end for
+					$i--;
+			// step 7
+					$der = $this->derivative($xs[$i], $accuracy);
+					if ($der == 0)
 					{
-						$xk1 = $XX;
-						break;
+						$this->comment = $this->errorList[1]->text;//1- функция не определена	
+						return "Error";				
 					}
 					else
+					$t = $xs[$i] - equate($xs[$i]) / $der;
+
+					if($t > $endInterval || $t < $startInterval)
 					{
-						$XX = 0.5 * ($xk + $XX);
+						$this->comment = $this->errorList[0]->text;//1- функция не определена	
+						return "Error";					
 					}
 
-				// if($this->iterations > $this->overload)
-				// {					
-				// 		$this->comment = $this->errorList[2]->text;//1- функция не определена	
-				// 		return "Error";				
-				// }	
+			// step 8			
+					while( abs(equate($t)) > $accuracy )
+					{
+						$xs[$i] = $t;
 
-				}while(true);
-				$xk = $xk1;
+						$der = $this->derivative($xs[$i], $accuracy);
+						if ($der == 0)
+						{
+							$this->comment = $this->errorList[1]->text;//1- функция не определена	
+							return "Error";				
+						}
+						else
+						{
+							$t = $xs[$i] - equate($xs[$i]) / $der;
+							$this->iterations++;
+							if($t > $endInterval || $t < $startInterval)
+							{
+								$this->comment = $this->errorList[0]->text;//1- функция не определена	
+								return "Error";					
+							}
+						}
+						if($this->iterations > $this->overload)
+						{					
+								$this->comment = $this->errorList[2]->text;//1- функция не определена	
+								return "Error";				
+						}	
+					}
+					return $t;
+				}
+			}
 
-				if($this->iterations > $this->overload)
-				{					
-						$this->comment = $this->errorList[2]->text;//1- функция не определена	
-						return "Error";				
-				}	
+	// function hybridMethod($a, $b, $accuracy)
+	// {
+	// 	$c = 0;
+	// 	$f_a = equate($a);
+	// 	$f_b = equate($b);
+	// 	$der = 0;
+	// 	$XX = 0;
+	// 	$xk1 = 0;
+	// 	$xk = $b;
+		
+		
+	// 	if( $f_a * $f_b > 0)
+	// 	{
+	// 		$this->comment = $this->errorList[3]->text;// нет корней или четные
+	// 		return "Error";	
+	// 	}
+	// 	else
+	// 	{
+	// 		do
+	// 		{
+	// 			$this->iterations++;
+	// 			$c = $xk;
+	// 			$der = $this->derivative($xk, $accuracy/10);
+	// 			if ($der==0)
+	// 			{
+	// 				$this->comment = $this->errorList[1]->text;	// division by zero
+	// 				return "Error";						
+	// 			}
+	// 			$XX = $xk - equate($xk) / $der;
+	// 			do
+	// 			{
+	// 				$this->iterations++;
+	// 				if( abs(equate($XX)) < abs(equate($xk)) )
+	// 				{
+	// 					$xk1 = $xk;
+	// 					// $xk1 = $XX;
+	// 					break;
+	// 				}
+	// 				else
+	// 				{
+	// 					$XX = 0.5 * ($xk + $XX);
+	// 				}
 
-			}while(abs($c - $xk1) > $accuracy);
+	// 			// if($this->iterations > $this->overload)
+	// 			// {					
+	// 			// 		$this->comment = $this->errorList[2]->text;//1- функция не определена	
+	// 			// 		return "Error";				
+	// 			// }	
 
-			return $xk1;
-		}
-	}
+	// 			}while(true);
+	// 			$xk = $xk1;
+
+	// 			if($this->iterations > $this->overload)
+	// 			{					
+	// 					$this->comment = $this->errorList[2]->text;//1- функция не определена	
+	// 					return "Error";				
+	// 			}	
+
+	// 		}while(abs(equate($xk1)) > $accuracy);
+	// 		// }while(abs($c - $xk1) > $accuracy);
+
+	// 		return $xk1;
+	// 	}
+	// }
 
 //
 
@@ -507,45 +518,8 @@ function dichotomyMethod($a,$b,$eps)
 
 
 function secantMethod($a,$b,$eps)
-	{	
-            if (equate($a) * equate($b) > 0)
-            {
-				$this->comment = $this->errorList[3]->text;// нет корней или четные 			
-				return "Error";	
-			}
-            else
-               {
-                $x = $a + 0.001;
-                $XX = $a;
-                $X = $b;
-                do
-                {
-                    $this->iterations++;
-                    if (abs($X - $x) > $eps)
-                        $x = $X;
-                    if(equate($XX) - equate($X)!=0)
-                    	$X = $x - equate($X) * ($XX - $x) / (equate($XX) - equate($X));
-                    else
-                    {
-                    	$this->comment = $this->errorList[1]->text; // division by zero
-						return "Error"; 
-					}
-					if($this->iterations > $this->overload)
-					{
-						$this->comment = $this->errorList[2]->text;//1- функция не определена 
-						return "Error"; 
-					}
-                    $res = $X;
-
-                } while (abs($X - $x) > $eps);
-                
-            }
-            return $res;
-	}
-
-function methodOfTangents($a,$b,$eps)
-		{
-		$c = 0;
+	{
+		$c = $b;
              if (equate($a) * equate($b) > 0)
             {
 				$this->comment = $this->errorList[3]->text;// нет корней или четные 			
@@ -553,8 +527,55 @@ function methodOfTangents($a,$b,$eps)
             }
             else
          {
-			if (equate($b) * $this->derivative2($c,$eps) <0) $c = $a;
-			else $c = $b;
+			if (equate($b) * $this->derivative2($b,$eps) <0)
+			{$c = $a;
+			$v=$a;
+			} 
+			else
+			{
+				 $c = $b;
+				$v=$b;
+			}
+			do
+			{	
+				if($this->derivative($c,$eps)==0)
+				{
+					$this->comment = $this->errorList[1]->text; // division by zero
+					return "Error";
+				}
+				$c = $c - equate($c) / $this->derivative($v,$eps);
+				$this->iterations++;
+				if($this->iterations > $this->overload)
+				{
+					$this->comment = $this->errorList[2]->text;//1- функция не определена 
+					return "Error"; 
+				}
+			} while (abs(equate($c))>$eps);
+			return $c;
+		 }
+		}
+
+function methodOfTangents($a,$b,$eps)
+		{
+		$c = $b;
+             if (equate($a) * equate($b) > 0)
+            {
+				$this->comment = $this->errorList[3]->text;// нет корней или четные 			
+				return "Error";	
+            }
+            else 
+         {
+			$this->forA = equate($a) * $this->derivative2($a,$eps);
+			$this->forB = equate($b) * $this->derivative2($b,$eps);
+
+			if (equate($b) * $this->derivative2($b,$eps) <0) 
+				$c = $a;
+			else if (equate($a) * $this->derivative2($a,$eps) <0)
+				$c = $b;
+				else {
+				$this->comment = $this->errorList[4]->text;// нет корней или четные 			
+				return "Error";						
+				}
 			do
 			{	
 				if($this->derivative($c,$eps)==0)

@@ -13,7 +13,7 @@ function Laba3()
             class: 'a col-md-2' , 
             type: 'number',
             size: 5,
-            value: 0
+            value: 0.1
         } ),
         b = $('<input/>' , { 
             class: 'b col-md-2' , 
